@@ -1,5 +1,5 @@
 <template>
-    <div class="card">
+    <div class="card tasklist">
         <draggable v-model="items" v-bind="dragOptions">
             <TaskListItem v-for="item in items" :item="item" :key="item.id"></TaskListItem>
         </draggable>
@@ -11,7 +11,8 @@ import Draggable from "vuedraggable"
 import TaskListItem from "./TaskListItem"
 export default {
     components:{
-        TaskListItem
+        TaskListItem,
+        Draggable
     },
     computed:{
         items: {
