@@ -1,3 +1,9 @@
 @import "../../node_modules/bootstrap/scss/bootstrap";
 @import url("https://fonts.googleapis.com/css?family=Gugi");
 
+.tasklist { background:lightgray; } 
+.tasklist .tasklist-title { background: #f7f7f7; border-radius: 0.2em; border: 1px solid #bbbbbb;}
+.tag-green,.tag-yellow,.tag-red { height: 8px; width: 20px; border-radius: 0.5em; }
+.tag-green { background:green; border:1px solid rgb(1, 85, 1); }
+.tag-yellow { background:yellow; border:1px solid rgb(85, 84, 1);}
+.tag-red { background:red;  border:1px solid rgb(85, 1, 1);}
