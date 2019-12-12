@@ -1,14 +1,16 @@
 <template>
-    <div class="card tasklist p-1">
-        <h4 class="tasklist-title">{{title}}</h4>
-        <draggable v-model="items" > <!--v-bind="dragOptions"-->
-            <TaskListItem  v-for="item in items" :item="item" :key="item.id"></TaskListItem>
-        </draggable>
-        <div class="card mt-2">
-            <button type="button" class="btn btn-success d-block">Add Task</button>
+    <div class="col-3 p-0 pl-1 pr-1">
+
+        <div class="card tasklist p-1">
+            <h4 class="tasklist-title">{{title}}</h4>
+            <draggable v-model="items" > <!--v-bind="dragOptions"-->
+                <TaskListItem  v-for="item in items" :item="item" :key="item.id"></TaskListItem>
+            </draggable>
+            <div class="card mt-2">
+                <button type="button" class="btn btn-success d-block">Add Task</button>
+            </div>
         </div>
     </div>
-    
 </template>
 
 <script>
@@ -20,8 +22,8 @@ export default {
         TaskListItem,
         Draggable
     },
-    data: function () {
-      return {objeto: this}
+    data() {
+      return {objeto: this.type}
     },
     computed:{
         items: {
@@ -32,9 +34,8 @@ export default {
             }
         }
     },
-    
-    mounted: ()=>{
-        console.log("montado");
+    mounted(){
+        console.log("montado",this);
     },
     created: ()=>{
        //do it
