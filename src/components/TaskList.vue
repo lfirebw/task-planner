@@ -35,7 +35,20 @@ export default {
         }
     },
     mounted(){
-        console.log("montado",this);
+        switch(this.type){
+            case 1:{
+                console.log("buscar en axio la lista to do");
+            }break;
+            case 2:{
+                console.log("buscar en axio la lista de in process");
+            }break;
+            case 3:{
+                console.log("buscar en axio la lista de checking");
+            }break;
+            case 4:{
+                console.log("buscar en axio la lista de finished");
+            }break;
+        }
     },
     created: ()=>{
        //do it

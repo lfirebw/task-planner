@@ -2,7 +2,7 @@
 <template>
     <div class="container">
         <h1>Task Planner <span class="badge badge-primary">v0.5</span></h1>
-        <div class="row">
+        <div class="row pb-4">
             <TaskList ref="to_do" v-for="value in list" :key="value.id" :title="value.name" :type="value.id"></TaskList>
         </div>
     </div>
