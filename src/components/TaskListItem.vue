@@ -31,8 +31,13 @@ export default {
     props:['item'],
     methods:{
         removeTask(){
-            
+            //remove component instance
+            this.$destroy();
         }
+    },
+    beforeDestroy () {
+        // remove the element from the DOM
+        this.$el.parentNode.removeChild(this.$el)
     }
 }
 </script>

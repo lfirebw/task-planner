@@ -52,8 +52,6 @@ export default {
     },
     created: ()=>{
        //do it
-        console.log("creado");
-
     }
 }
 </script>
