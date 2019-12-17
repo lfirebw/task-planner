@@ -3,8 +3,9 @@
 
         <div class="card tasklist p-1">
             <h4 class="tasklist-title">{{title}}</h4>
-            <draggable v-model="items" > <!--v-bind="dragOptions"-->
-                <TaskListItem  v-for="item in items" :item="item" :key="item.id"></TaskListItem>
+            <!--v-bind="dragOptions"-->
+            <draggable v-model="tasks" > 
+                <TaskListItem  v-for="task in tasks" :item="task" :key="task.id"></TaskListItem>
             </draggable>
             <div class="card mt-2">
                 <button type="button" class="btn btn-success d-block">Add Task</button>
@@ -16,6 +17,9 @@
 <script>
 import Draggable from "vuedraggable"
 import TaskListItem from "./TaskListItem"
+import VARIABLES from "@/variables.js"
+import axios from 'axios'
+
 export default {
     props: ['title','type'],
     components:{
@@ -23,7 +27,10 @@ export default {
         Draggable
     },
     data() {
-      return {objeto: this.type}
+      return {
+          objeto: this.type,
+          tasks:null
+        }
     },
     computed:{
         items: {
@@ -35,20 +42,16 @@ export default {
         }
     },
     mounted(){
-        switch(this.type){
-            case 1:{
-                console.log("buscar en axio la lista to do");
-            }break;
-            case 2:{
-                console.log("buscar en axio la lista de in process");
-            }break;
-            case 3:{
-                console.log("buscar en axio la lista de checking");
-            }break;
-            case 4:{
-                console.log("buscar en axio la lista de finished");
-            }break;
-        }
+        let strRequest = `task/user/1/list/${this.type}`;
+        axios.get(String.prototype.concat(VARIABLES.URLWEB,strRequest))
+        .then((response) => {
+            if(response.data.code == 200){
+                this.tasks = response.data.data;
+            }else{
+                console.error("error en la consulta: ",response.data.message);
+            }
+        })
+        .catch(error => console.log("error ",error))
     },
     created: ()=>{
        //do it

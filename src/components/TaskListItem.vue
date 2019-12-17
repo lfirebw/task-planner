@@ -2,7 +2,7 @@
     <div class="card mt-1 mb-1">
         <h5 class="card-header h5 p-1">
             <div class="row justify-content-between m-0">
-                <div class="col-auto">{{ item.title }}</div>
+                <div class="col-auto">{{ item.nombre }}</div>
                 <div class="col-3 p-0 text-right">
                     <button type="button" class="btn btn-primary btn-sm mr-1">...</button>
                     <button type="button" @click="removeTask" class="btn btn-danger btn-sm mr-1">&times;</button>
