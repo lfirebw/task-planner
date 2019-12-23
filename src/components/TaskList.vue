@@ -8,7 +8,7 @@
                 <TaskListItem  v-for="task in tasks" :item="task" :key="task.id"></TaskListItem>
             </draggable>
             <div class="card mt-2">
-                <button type="button" class="btn btn-success d-block">Add Task</button>
+                <button type="button" class="btn btn-success d-block" @click="addTask">Add Task</button>
             </div>
         </div>
     </div>
@@ -55,6 +55,13 @@ export default {
     },
     created: ()=>{
        //do it
+    },
+    methods:{
+        addTask(){
+            let _t = this.type;
+            // this.$router.go('/maketask');
+            this.$router.push({ path: `/maketask/${_t}` })
+        }
     }
 }
 </script>

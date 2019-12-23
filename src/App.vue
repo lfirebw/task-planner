@@ -13,18 +13,18 @@
   <div id="app">
     <img alt="Vue logo" src="./assets/logo.png">
     <!-- <HelloWorld msg="Welcome to Your Vue.js App"/> -->
-    <AppContent></AppContent>
+    <!-- <AppContent></AppContent> -->
+    <router-view />
   </div>
 </template>
 
 <script>
 
-import AppContent from '@/components/AppContent.vue'
 
 export default {
   name: 'app',
   components: {
-    AppContent
+    
   }
 }
 </script>

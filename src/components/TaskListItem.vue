@@ -17,7 +17,7 @@
                 <div class="col-1"><div class="tag-red"></div></div>
             </div>
             <div class="p-1"></div>
-            <p class="card-text text-left">With supporting text below as a natural lead-in to additional content.</p>
+            <p class="card-text text-left">{{ item.descripcion }}</p>
             <div class="row justify-content-right">
                 <div class="col-2 p-0">
                     <figure class="m-0"><img src="https://media.licdn.com/dms/image/C4E03AQFBYTg5yAUuPA/profile-displayphoto-shrink_100_100/0?e=2159024400&v=beta&t=-3FToVy8-8T3jmVT9SFC7fPzTsP5CsH9e4CFEsNzp14" class="img-fluid" /></figure>

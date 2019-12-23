@@ -7,3 +7,4 @@
 .tag-green { background:green; border:1px solid rgb(1, 85, 1); }
 .tag-yellow { background:yellow; border:1px solid rgb(85, 84, 1);}
 .tag-red { background:red;  border:1px solid rgb(85, 1, 1);}
+.modal-task{ background-color: rgba(0,0,0,.8); position:fixed; top:0;right:0; bottom:0; left:0; opacity:0; z-index: 1; transition: all 0.2s ease-in-out; }
