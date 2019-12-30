@@ -1,9 +1,14 @@
 <template>
     <div class="container">
-        <h2 class="font-italic" v-if="type == 1" >New task to "To do" List</h2>
-        <h2 class="font-italic" v-else-if="type == 2" >New task to "In Process" List</h2>
-        <h2 class="font-italic" v-else-if="type == 3" >New task to "Evaluate" List</h2>
-        <h2 class="font-italic" v-else >New task to "Finished" List</h2>
+        <div v-if="this.isEdit != null && this.isEdit == true">
+            <h2>Edit Task</h2>
+        </div>
+        <div v-else>
+            <h2 class="font-italic" v-if="type == 1" >New task to "To do" List</h2>
+            <h2 class="font-italic" v-else-if="type == 2" >New task to "In Process" List</h2>
+            <h2 class="font-italic" v-else-if="type == 3" >New task to "Evaluate" List</h2>
+            <h2 class="font-italic" v-else >New task to "Finished" List</h2>
+        </div>
         <div class="row justify-content-center">
             <div class="col-sm-6">
                 <form id="addtask_form" class="border border-primary rounded p-2" @submit.prevent="onSubmit" method="POST">
@@ -58,7 +63,7 @@
                             <button type="button" class="btn btn-danger" @click.prevent="goBack">Cancel</button>
                         </div>
                         <div class="col-sm-4 text-center">
-                            <button type="submit" class="btn btn-success">Create</button>
+                            <button type="submit" class="btn btn-success">Save</button>
                         </div>
                     </div>
                 </form>
@@ -77,6 +82,7 @@ import axios from 'axios'
 import qs from 'qs'
 
 export default {
+    props:['isEdit'],
     components: { Multiselect, VueEditor },
     data(){
         return {
@@ -95,7 +101,6 @@ export default {
     mounted(){
         //set params
         this.type = this.$route.params.type
-        
         //find users
         axios.get(String.prototype.concat(VARIABLES.URLWEB,"users"))
         .then((response) => {
@@ -110,11 +115,38 @@ export default {
             }
         })
         .catch(error => console.log("error ",error))
+        .finally(()=>{
+            if(this.isEdit != null && this.isEdit == true){
+                this.findtaskForEdit();
+            }
+        })
+
     },
     methods:{
         goBack(){
             this.$router.push('/')
 
+        },
+        findtaskForEdit(){
+            let _id = this.$route.params.id;
+            //find task
+            axios.get(String.prototype.concat(VARIABLES.URLWEB,"task/id/",_id))
+            .then((response) => {
+                if(response.data.code == 200){
+                    if(Object.keys(response.data.data).length > 0){
+                        let obj = response.data.data[0];
+                        this.name = obj.nombre;
+                        this.description = obj.descripcion;
+                        this.descriptionLong = obj.descripcion_long;
+                        this.members = JSON.parse(obj.members);
+                        this.checklist = JSON.parse(obj.checklist);
+                        this.tagColor = JSON.parse(obj.tagcolor);
+                    }
+                }else{
+                    console.error("error en la consulta: ",response.data.message);
+                }
+            })
+            .catch(error => console.log("error ",error))
         },
         removetasklist(value,indice){
             this.checklist.splice((indice - 1),1);

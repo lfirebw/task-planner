@@ -4,7 +4,15 @@
             <div class="row justify-content-between m-0">
                 <div class="col-9 p-1">{{ item.nombre }}</div>
                 <div class="col-3 p-0 text-right">
-                    <button type="button" class="btn btn-primary btn-sm mr-1">...</button>
+                    <div class="dropdown d-inline-block">
+                        <button type="button" class="btn btn-primary btn-sm mr-1"  role="button" id="dropdownmenu" @click="showDrowndown" @blur="handleBlur">...</button>
+                        <div class="dropdown-menu show" v-if="this.showDropMenu1" aria-labelledby="dropdownMenuLink">
+                            <a class="dropdown-item" href="javascript:void(0)" @click.prevent="viewTask">View</a>
+                            <a class="dropdown-item" href="javascript:void(0)" @click.prevent="go('edit')">Edit</a>
+                            <a class="dropdown-item" href="#">Move to</a>
+                            <a class="dropdown-item" href="javascript:void(0)" @click="removeTask">Remove</a>
+                        </div>
+                    </div>
                     <button type="button" @click="removeTask" class="btn btn-danger btn-sm mr-1">&times;</button>
                 </div>
             </div>
@@ -27,13 +35,38 @@
     </div>
 </template>
 <script>
+import {EventBus} from '@/bus.js'
+
 export default {
     props:['item'],
+    data(){
+        return {
+            showDropMenu1: false
+        }
+    },
     methods:{
         removeTask(){
             //remove from DB
             //remove component instance
             this.$destroy();
+        },
+        showDrowndown(){
+            this.showDropMenu1 = !this.showDropMenu1;
+        },
+        handleBlur(){
+            // this.showDrowndown();
+        },
+        go(v){
+            let _id = this.item.id;
+            v = v.toString().toLowerCase();
+            switch(v){
+                case 'edit':
+                    this.$router.push({ path: `/edit/${_id}` })
+                break;
+            }
+        },
+        viewTask(){
+            EventBus.$emit('showmodal',{modalType:1, data: this.item });
         }
     },
     beforeDestroy () {

@@ -1,9 +1,9 @@
 <template>
     <div class="modal-task" v-show="value">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Modal title</h5>
+                <h5 class="modal-title">{{item.nombre}}</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click.prevent="close"><span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body">
@@ -21,7 +21,8 @@ export default {
     props:{
         value:{
             required: true
-        }
+        },
+        item:[Object,Array]
     },
     methods:{
         close(){
