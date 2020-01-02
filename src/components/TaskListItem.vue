@@ -9,7 +9,7 @@
                         <div class="dropdown-menu show" v-if="this.showDropMenu1" aria-labelledby="dropdownMenuLink">
                             <a class="dropdown-item" href="javascript:void(0)" @click.prevent="viewTask">View</a>
                             <a class="dropdown-item" href="javascript:void(0)" @click.prevent="go('edit')">Edit</a>
-                            <a class="dropdown-item" href="#">Move to</a>
+                            <a class="dropdown-item" href="javascript:void(0)" @click.prevent="moveto">Move to</a>
                             <a class="dropdown-item" href="javascript:void(0)" @click="removeTask">Remove</a>
                         </div>
                     </div>
@@ -25,7 +25,9 @@
                 <div class="col-1"><div class="tag-red"></div></div>
             </div>
             <div class="p-1"></div>
-            <p class="card-text text-left">{{ item.descripcion }}</p>
+            <div @click="viewTask" style="cursor:pointer;">
+                <p class="card-text text-left">{{ item.descripcion }}</p>
+            </div>
             <div class="row justify-content-right">
                 <div class="col-2 p-0">
                     <figure class="m-0"><img src="https://media.licdn.com/dms/image/C4E03AQFBYTg5yAUuPA/profile-displayphoto-shrink_100_100/0?e=2159024400&v=beta&t=-3FToVy8-8T3jmVT9SFC7fPzTsP5CsH9e4CFEsNzp14" class="img-fluid" /></figure>
@@ -37,6 +39,10 @@
 <script>
 import {EventBus} from '@/bus.js'
 
+import VARIABLES from "@/variables.js"
+import axios from 'axios'
+import qs from 'qs'
+
 export default {
     props:['item'],
     data(){
@@ -46,9 +52,36 @@ export default {
     },
     methods:{
         removeTask(){
-            //remove from DB
+            let _estado = this.item.estado;
             //remove component instance
             this.$destroy();
+
+            //remove from DB
+            let url = String.prototype.concat(VARIABLES.URLWEB,"task/edit");
+
+            let POSTDATA = {
+                id: this.item.id,
+                iddetalle:this.item.iddetalle,
+                type : -1,
+                keygen: VARIABLES.KEYGEN
+            }
+            //save task to the database
+            const options = {
+                method: 'POST',
+                headers: { 'Accept': 'application/json, application/xml, text/plain, text/html, *.*','content-type': 'application/x-www-form-urlencoded' },
+                data: qs.stringify(POSTDATA),
+                url,
+            };
+            axios(options)
+            .then((response) => {
+                if(response.data.code != 200){
+                    console.error("error en la consulta: ",response.data.message);
+                }else{
+                    EventBus.$emit('updateTask',_estado);
+                }
+            })
+            .catch(error => console.log("error ",error))
+            
         },
         showDrowndown(){
             this.showDropMenu1 = !this.showDropMenu1;
@@ -64,14 +97,22 @@ export default {
                     this.$router.push({ path: `/edit/${_id}` })
                 break;
             }
+            this.showDrowndown();
         },
         viewTask(){
+            this.showDropMenu1 = false;
             EventBus.$emit('showmodal',{modalType:1, data: this.item });
+        },
+        moveto(){
+            this.showDrowndown();
+            EventBus.$emit('showmodal2',this.item);
         }
     },
     beforeDestroy () {
         // remove the element from the DOM
-        this.$el.parentNode.removeChild(this.$el)
+        if(this.$el.parentNode != null){
+            this.$el.parentNode.removeChild(this.$el)
+        }
     }
 }
 </script>

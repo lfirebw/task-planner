@@ -15,6 +15,8 @@
 </template>
 
 <script>
+import {EventBus} from '@/bus.js'
+
 import Draggable from "vuedraggable"
 import TaskListItem from "./TaskListItem"
 import VARIABLES from "@/variables.js"
@@ -42,25 +44,35 @@ export default {
         }
     },
     mounted(){
-        let strRequest = `task/user/1/list/${this.type}`;
-        axios.get(String.prototype.concat(VARIABLES.URLWEB,strRequest))
-        .then((response) => {
-            if(response.data.code == 200){
-                this.tasks = response.data.data;
-            }else{
-                console.error("error en la consulta: ",response.data.message);
-            }
-        })
-        .catch(error => console.log("error ",error))
+        this.loadTask();
     },
-    created: ()=>{
-       //do it
-    },
+    created(){
+       EventBus.$on('updateTask',(el)=>{
+           if(el != null && this.type == el){
+               this.loadTask(el);
+           }else if(el == null){
+               this.loadTask();
+           }
+        });
+    },  
     methods:{
         addTask(){
             let _t = this.type;
             // this.$router.go('/maketask');
             this.$router.push({ path: `/maketask/${_t}` })
+        },
+        loadTask(t=null){
+            t = t==null ? this.type : t; 
+            let strRequest = `task/user/1/list/${t}`;
+            axios.get(String.prototype.concat(VARIABLES.URLWEB,strRequest))
+            .then((response) => {
+                if(response.data.code == 200){
+                    this.tasks = response.data.data;
+                }else{
+                    console.error("error en la consulta: ",response.data.message);
+                }
+            })
+            .catch(error => console.log("error ",error))
         }
     }
 }

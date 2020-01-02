@@ -173,6 +173,11 @@ export default {
                 _continue = false;
             }
             if(_continue){
+                if(this.isEdit != null && this.isEdit == true){
+                    url = String.prototype.concat(VARIABLES.URLWEB,"task/edit");
+                    POSTDATA.id = this.$route.params.id;
+                    POSTDATA.type = 0;
+                }
                 //save task to the database
                 const options = {
                     method: 'POST',
